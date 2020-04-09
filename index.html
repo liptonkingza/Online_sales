@@ -1,0 +1,149 @@
+<html>
+<head>
+    <title>INT4517</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+			padding: 0px 15px;
+            display: -ms-flexbox;
+            display: flex;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+			
+        }
+        div.form {
+            width: 100%;
+            max-width: 750px;
+            padding: 5px;
+            margin: auto;
+
+			}
+        button.col-6-button{
+			background-color: white; /* สี */
+			border:2px solid #FB8C74;
+			border-radius:60px;
+			color: black;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			transition-duration: 0.4s;
+			}
+		button.col-12-button{
+			background-color: white; /* สี */
+			border:2px solid #FB8C74;
+			border-radius:60px;
+			color: black;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			}
+		button:hover {
+			background-color: #FB8C74; /* สีตอนเม้าเลื่อนไป */
+			color: white;}
+		.search{
+			background-color: white; /* สี */
+			border:3px solid #FB8C74;
+			}
+		body{
+			background-image: url(bg2.jpg);
+			width:100%;
+			height:100%;}
+			
+				
+
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="form">
+            <font color="#535353"><h3 class="text-center mb-3">E-Commerce Search</h3></font>
+			<div class="search">
+            <center><input type="text" class="form-control "id="search"></div></center>
+			<br>
+            <center><button id="button" type="button" class="col-6 btn btn-outline-danger ">
+			 ค้นหา</button></center>
+			
+			<br>
+			<center>
+				<a href="#"><button class="col-6-button">ช่องทางขายของ</button></a>
+				<a href="#"><button class="col-6-button">การออกแบบสื่อ</button></a>
+				<br><a href="#"><button class="col-6-button">การตลาด</button></a>
+				<a href="#"><button class="col-6-button">การบริหารเวลา</button></a>
+				<br>
+				<a href="#"><button class="col-12-button">เคล็ดลับการขาย</button></a>
+			</center>
+			
+        </div>
+	
+        <div class="form">
+            <p id="count"> </p>
+            <div class="list-group" id="result">
+               
+            </div>
+        </div>
+    </div>
+	
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="database.js"></script>
+    <script>
+        $("#button").click(function(){
+
+            var search = $('#search').val().toLowerCase().trim();
+            var count = $('#count').text();
+            var i = 0;   
+
+            $('#result').html('')
+            $('#count').html('')
+
+            if(search == '') {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'กรุณากรอกคำค้นหา'
+                })
+            } else {
+                database.web.forEach(element => {
+                    if ( $.inArray(search, element.keywords) !== -1 ) {
+                        i++;
+                        $('#result').append(`
+                        <a href="${element.url}" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">${element.title}</h5>
+                        </div><p class="mb-1">${element.description}</p><small class="text-success">${element.url}</small></a>`);
+                    } 
+                });
+
+            if (i === 0) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'ไม่พบข้อมูลที่ท่านค้นหา (' + search + ') กรุณาเปลี่ยนข้อความ'
+                })
+            } else {
+                $('#count').append(`<span>พบผลการค้นหา <span class="text-primary">${i}</span> ผลลัพธ์</span>`);
+            }             
+        }
+    });     
+    </script>
+</body>
+</body>
+
+</html>
